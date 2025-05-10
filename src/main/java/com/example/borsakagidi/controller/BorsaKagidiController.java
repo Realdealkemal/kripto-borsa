@@ -1,0 +1,34 @@
+package com.example.borsakagidi.controller;
+
+
+import com.example.borsakagidi.controller.dto.BorsaKagidiEkleDTO;
+import com.example.borsakagidi.controller.dto.GoruntuleBorsaKagidiDTO;
+import com.example.borsakagidi.entity.BorsaKagidi;
+import com.example.borsakagidi.mapper.BorsaKagidiEkleDTOMapper;
+import com.example.borsakagidi.mapper.GoruntuleBorsaKagidiMapper;
+import com.example.borsakagidi.service.BorsaKagidiService;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/borsaKagidi")
+public class BorsaKagidiController {
+    private final BorsaKagidiService borsaKagidiService;
+
+    public BorsaKagidiController(BorsaKagidiService borsaKagidiService) {
+        this.borsaKagidiService = borsaKagidiService;
+    }
+
+    @GetMapping("/getirTumBorsaKagitlari")
+    public List<GoruntuleBorsaKagidiDTO> getAllAccountList(){
+        List<BorsaKagidi> accountList = borsaKagidiService.getAllBorsaKagidiList();
+        return GoruntuleBorsaKagidiMapper.INSTANCE.toGoruntuleBorsaKagidiDTOList(accountList);
+    }
+
+    @PostMapping("/createBorsaKagidi")
+    public void createAccount(@Valid @RequestBody BorsaKagidiEkleDTO borsaKagidiEkleDTO){
+        borsaKagidiService.createBorsaKagidi(BorsaKagidiEkleDTOMapper.INSTANCE.toBorsaKagidi(borsaKagidiEkleDTO));
+    }
+}
