@@ -8,6 +8,7 @@ import com.example.borsakagidi.mapper.BorsaKagidiEkleDTOMapper;
 import com.example.borsakagidi.mapper.GoruntuleBorsaKagidiMapper;
 import com.example.borsakagidi.service.BorsaKagidiService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,12 +22,14 @@ public class BorsaKagidiController {
         this.borsaKagidiService = borsaKagidiService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/getirTumBorsaKagitlari")
     public List<GoruntuleBorsaKagidiDTO> getAllAccountList(){
         List<BorsaKagidi> accountList = borsaKagidiService.getAllBorsaKagidiList();
         return GoruntuleBorsaKagidiMapper.INSTANCE.toGoruntuleBorsaKagidiDTOList(accountList);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/createBorsaKagidi")
     public void createAccount(@Valid @RequestBody BorsaKagidiEkleDTO borsaKagidiEkleDTO){
         borsaKagidiService.createBorsaKagidi(BorsaKagidiEkleDTOMapper.INSTANCE.toBorsaKagidi(borsaKagidiEkleDTO));
