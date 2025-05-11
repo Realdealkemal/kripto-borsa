@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/borsaKagidi")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BorsaKagidiController {
     private final BorsaKagidiService borsaKagidiService;
 

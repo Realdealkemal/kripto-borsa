@@ -19,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/account")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AccountController {
 
     private final AccountService accountService;
