@@ -1,5 +1,6 @@
 package com.example.user.AuthService;
 
+import com.example.account.entity.Account;
 import com.example.jwt.JwtService;
 import com.example.user.AuthController.dto.AuthenticationResponse;
 import com.example.user.AuthController.dto.UserDTO;
@@ -13,7 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Set;
 
@@ -37,8 +38,18 @@ public class AuthService {
     public UserDTO register(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRoles(getirDefaultTanimlanacakRoller());
+        user.setAccount(userIcinAccountOlustur(user));
         userRepository.save(user);
         return UserDTOMapper.INSTANCE.toUserDTO(user);
+    }
+
+    private Account userIcinAccountOlustur(User user) {
+        Account account = new Account();
+        account.setName(user.getUsername());
+        account.setBudget(new BigDecimal(0));
+
+        account.setUser(user);
+        return account;
     }
 
     private Set<Role> getirDefaultTanimlanacakRoller(){

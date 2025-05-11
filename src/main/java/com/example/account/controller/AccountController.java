@@ -8,8 +8,11 @@ import com.example.account.entity.Account;
 import com.example.account.mapper.AccacuntEkleDTOMapper;
 import com.example.account.mapper.GoruntuleAllAccountMapper;
 import com.example.account.service.AccountService;
+import com.example.user.AuthService.AuthService;
+import com.example.user.entity.User;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,14 +22,17 @@ import java.util.List;
 public class AccountController {
 
     private final AccountService accountService;
+    private final AuthService authService;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, AuthService authService) {
         this.accountService = accountService;
+        this.authService = authService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getirTumAccountlar")
     public List<GoruntuleAccountDTO> getAllAccountList(){
+
         List<Account> accountList = accountService.getAllAccountList();
         return GoruntuleAllAccountMapper.INSTANCE.toGoruntuleAllAccountDTOList(accountList);
     }
@@ -34,7 +40,9 @@ public class AccountController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/createAccount")
     public void createAccount(@RequestBody AccountEkleDTO accountEkleDTO){
-         accountService.createAccount(AccacuntEkleDTOMapper.INSTANCE.toAccount(accountEkleDTO));
+        Object response = SecurityContextHolder.getContext().getAuthentication().getDetails();
+        User user = (User) response;
+        accountService.createAccount(AccacuntEkleDTOMapper.INSTANCE.toAccount(accountEkleDTO), user);
     }
 
     @PreAuthorize("hasRole('USER')")

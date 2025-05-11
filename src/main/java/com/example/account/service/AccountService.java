@@ -9,11 +9,10 @@ import com.example.account.service.checker.AccountServiceChecker;
 import com.example.accountsborsakagidi.entity.AccountsBorsaKagidi;
 import com.example.accountsborsakagidi.entity.service.AccountsBorsaKagidiService;
 import com.example.borsakagidi.entity.BorsaKagidi;
-import com.example.borsakagidi.repository.BorsaKagidiRepository;
 import com.example.borsakagidi.service.BorsaKagidiService;
 import com.example.borsakagidi.service.BorsaKagidiServiceChecker;
+import com.example.user.entity.User;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import lombok.Synchronized;
 import org.springframework.stereotype.Service;
 
@@ -41,15 +40,18 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    public void createAccount(Account account) {
-        if (accountServiceChecker.isAccountExits(account)) {
-            yeniAccountBilgileriDoldur(account);
+    public void createAccount(Account account, User user) {
+        if (accountServiceChecker.isAccountExits(account)
+                && accountServiceChecker.isUseraAccountEklenebilir(user)) {
+            yeniAccountBilgileriDoldur(account, user);
             accountRepository.save(account);
         }
     }
 
-    private void yeniAccountBilgileriDoldur(Account account) {
+    private void yeniAccountBilgileriDoldur(Account account, User user) {
         account.setBudget(new BigDecimal(0.0));
+        account.setUser(user);
+        user.setAccount(account);
     }
 
     public void paraAktar(ParaAktarDTO paraAktarDTO) {

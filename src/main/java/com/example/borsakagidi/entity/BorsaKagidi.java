@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,5 +33,5 @@ public class BorsaKagidi {
     private Integer stock;
 
     @OneToMany(mappedBy = "borsaKagidi", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AccountsBorsaKagidi> accountsBorsaKagidi;
+    private Set<AccountsBorsaKagidi> accountsBorsaKagidi;
 }
