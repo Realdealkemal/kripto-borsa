@@ -34,5 +34,5 @@ public class Account {
     private BigDecimal budget;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AccountsBorsaKagidi> accountsBorsaKagidi;
+    private Set<AccountsBorsaKagidi> accountsBorsaKagidiSet;
 }

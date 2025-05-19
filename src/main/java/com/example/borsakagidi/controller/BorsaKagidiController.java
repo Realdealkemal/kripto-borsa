@@ -3,12 +3,15 @@ package com.example.borsakagidi.controller;
 
 import com.example.borsakagidi.controller.dto.BorsaKagidiEkleDTO;
 import com.example.borsakagidi.controller.dto.GoruntuleBorsaKagidiDTO;
+import com.example.borsakagidi.controller.dto.GoruntuleKulanicininBorsaKagitlariiResponseDTO;
 import com.example.borsakagidi.entity.BorsaKagidi;
 import com.example.borsakagidi.mapper.BorsaKagidiEkleDTOMapper;
 import com.example.borsakagidi.mapper.GoruntuleBorsaKagidiMapper;
 import com.example.borsakagidi.service.BorsaKagidiService;
+import com.example.user.entity.User;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,5 +37,14 @@ public class BorsaKagidiController {
     @PostMapping("/createBorsaKagidi")
     public void createAccount(@Valid @RequestBody BorsaKagidiEkleDTO borsaKagidiEkleDTO){
         borsaKagidiService.createBorsaKagidi(BorsaKagidiEkleDTOMapper.INSTANCE.toBorsaKagidi(borsaKagidiEkleDTO));
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/getirAccountBorsaKagidi")
+    public GoruntuleKulanicininBorsaKagitlariiResponseDTO getirKullaniciyaAitBorsaKagitlari(){
+        Object response = SecurityContextHolder.getContext().getAuthentication().getDetails();
+        User user = (User) response;
+
+        return borsaKagidiService.getirKullaniciyaAitBorsaKagitlari(user);
     }
 }

@@ -103,7 +103,7 @@ public class AccountService {
     }
 
     private void iliskileriEkleAccountBorsaKagidi(Account alimYapanHesap, BorsaKagidi borsaKagidi ,AccountsBorsaKagidi accountsBorsaKagidi) {
-        alimYapanHesap.getAccountsBorsaKagidi().add(accountsBorsaKagidi);
+        alimYapanHesap.getAccountsBorsaKagidiSet().add(accountsBorsaKagidi);
         borsaKagidi.getAccountsBorsaKagidi().add(accountsBorsaKagidi);
     }
 }
