@@ -106,4 +106,8 @@ public class AccountService {
         alimYapanHesap.getAccountsBorsaKagidiSet().add(accountsBorsaKagidi);
         borsaKagidi.getAccountsBorsaKagidi().add(accountsBorsaKagidi);
     }
+
+    public Account getirUseraAitAccountBilgileri(User user) {
+        return user.getAccount();
+    }
 }

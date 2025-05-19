@@ -58,4 +58,13 @@ public class AccountController {
         accountService.borsaKagidiAl(borsaKagidiAlDTO);
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/getirUseraAitAccountBilgileri")
+    public GoruntuleAccountDTO getirUseraAitAccountBilgileri(){
+        Object response = SecurityContextHolder.getContext().getAuthentication().getDetails();
+        User user = (User) response;
+
+        return GoruntuleAllAccountMapper.INSTANCE.toGoruntuleAllAccountDTO(accountService.getirUseraAitAccountBilgileri(user));
+    }
+
 }
